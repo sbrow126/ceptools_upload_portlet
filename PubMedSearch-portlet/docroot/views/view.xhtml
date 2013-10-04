@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+
+<f:view
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<h:head />
+	<h:body>
+	
+	
+		
+<h:form>
+
+    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+	<p:wizard flowListener="#{pubMedSearch.onFlowProcess}" showStepStatus="false" >
+	
+		<p:tab id="searchselect" title="Search Selection">
+
+			<p:panel header="Search Type">
+			
+				<h:messages errorClass="error"/>
+				<h:messages value=""/>
+				
+				<h:panelGrid columns="1" columnClasses="label, value" styleClass="grid">
+				
+				
+				 
+				 
+                <h:outputText value="Select a search criteria to for a PubMed Search " />  
+		        <p:selectOneButton value="#{pubMedSearch.searcher}">  
+		            <f:selectItem itemLabel="Author" itemValue="author" />  
+		            <f:selectItem itemLabel="Title" itemValue="title" />  
+		            <f:selectItem itemLabel="PMID" itemValue="pmid" />  
+		        </p:selectOneButton>  
+        
+				
+				</h:panelGrid>
+			</p:panel>
+		</p:tab>
+			
+		<p:tab id="searchauthor" title="Search Criteria">
+			<p:panel header="Enter the author of the publication to search PubMed">
+			
+				<h:messages errorClass="error"/>
+				
+				<h:panelGrid columns="2" columnClasses="label, value">
+					<h:outputText value="Author: " />
+					<p:inputText value="#{pubMedSearch.userauthor}" />
+					
+				
+					
+				</h:panelGrid>
+			</p:panel>
+		</p:tab>
+		<p:tab id="searchtitle" title="Search Criteria">
+			<p:panel header="Enter the title of the publication to search PubMed">
+			
+				<h:messages errorClass="error"/>
+				
+				<h:panelGrid columns="2" columnClasses="label, value">
+					<h:outputText value="Title: " />
+					<p:inputText value="#{pubMedSearch.usertitle}" />
+					
+				
+					
+				</h:panelGrid>
+			</p:panel>
+		</p:tab >
+		<p:tab id="searchpmid" title="Search Criteria">
+			<p:panel header="Enter the PMID to search PubMed">
+			
+				<h:messages errorClass="error"/>
+				
+				<h:panelGrid columns="2" columnClasses="label, value">
+					<h:outputText value="PMID: " />
+					<p:inputText value="#{pubMedSearch.userpmid}" />
+					
+				
+					
+				</h:panelGrid>
+			</p:panel>
+		</p:tab>	
+	
+			
+		<p:tab id="resultsdisplay" title="Results">
+			<p:panel header="Select Publication">
+				
+				<h:messages errorClass="error"/>
+			
+			
+				<h:panelGrid columns="2" columnClasses="label, value">
+			
+			 <h:form id="form">
+				
+			
+				<p:dataTable id="basicList" var="pubs" value="#{pubMedSearch.publications}" selection="#{pubMedSearch.selectedPub}"  rowKey="#{pubs.index}" selectionMode="single" > 
+                  
+                  
+               
+				
+				<p:column headerText="Title" > 
+				 #{pubs.title} 
+				  </p:column>  
+				
+				<p:column headerText="Author" > 
+				 #{pubs.fullnames}
+				  </p:column>  
+				
+				<p:column headerText="Abstract" >  
+				  #{pubs.abstract} 
+				   </p:column>  
+				
+				 <p:column headerText="Year Published"  > 
+				  #{pubs.year} 
+				   </p:column>  
+ 
+				  </p:dataTable>  
+	
+			</h:form>
+			
+			
+				</h:panelGrid>
+			</p:panel>
+		</p:tab>
+		<p:tab id="confirm" title="Search Criteria Confirmation">
+			<p:panel header="Is this the correct record?">
+			
+				<h:messages errorClass="error"/>
+				<f:facet name="caption2">If this is the correct record, please select the "Next" button below. </f:facet> 
+				
+				<h:panelGrid columns="2" columnClasses="label, value">
+					<h:form>
+				<h:outputText style="font-weight: bold" value="Title: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.title}"  id="selectedpubconfirmt"/> <br/> 
+				<h:outputText style="font-weight: bold" value="Authors: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.fullnames}"  id="selectedpubconfirmf"/>  <br/> 
+				<h:outputText style="font-weight: bold" value="Abstract:  "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.abstract}" id="selectedpubconfirma"/> <br/>  
+				<h:outputText style="font-weight: bold" value="Year: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.year}" id="selectedpubconfirmy"/>  <br/> 
+					
+
+					</h:form>
+				</h:panelGrid>
+			</p:panel>
+		</p:tab>	
+		<p:tab id="upload" title="Upload Files">
+			<p:panel header="Upload Files">
+			
+				<h:panelGrid id="uploads" >
+				
+				
+			<h:form>  
+			    <h:outputText style="font-weight: bold" value="Publication:"/><br/> 
+                <h:outputText style="font-weight: bold" value="Title: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.title}"  id="selectedpubconfirmt"/> <br/> 
+				<h:outputText style="font-weight: bold" value="Authors: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.fullnames}"  id="selectedpubconfirmf"/>  <br/> 
+				<h:outputText style="font-weight: bold" value="Abstract:  "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.abstract}" id="selectedpubconfirma"/> <br/>  
+				<h:outputText style="font-weight: bold" value="Year: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.year}" id="selectedpubconfirmy"/>  <br/> <br/> 
+				<h:outputText style="font-weight: bold" value="Please select electrophysiology files from your computer to attach to this record."/>
+   			
+   			 <p:fileUpload fileUploadListener="#{pubMedSearch.fchooser.handleFileUpload}" mode="advanced" style="width:100%" dragDropSupport="true" update="messages" multiple="true" fileLimit="5" sizeLimit="2000000" allowTypes="/(\.|\/)(abf)$/" />  
+  
+   			 <p:growl id="messages" life="10000" showDetail="true" sticky="true"/>  
+  
+  
+  
+  
+  
+			</h:form>  
+					
+					
+		
+				</h:panelGrid>
+				
+			
+			</p:panel>
+		</p:tab>
+		<p:tab id="display" title="Publication Import Complete">
+			<p:panel header="#{pubMedSearch.selectedPub.title}">
+			
+				<h:panelGrid id="displays" >
+				
+				
+			<h:form id="me" >  
+			  
+			<h:outputText style="font-weight: bold" value="Publication:"/><br/> 
+                <h:outputText style="font-weight: bold" value="Title: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.title}"  id="selectedpubconfirmt"/> <br/> 
+				<h:outputText style="font-weight: bold" value="Authors: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.fullnames}"  id="selectedpubconfirmf"/>  <br/> 
+				<h:outputText style="font-weight: bold" value="Abstract:  "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.abstract}" id="selectedpubconfirma"/> <br/>  
+				<h:outputText style="font-weight: bold" value="Year: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.year}" id="selectedpubconfirmy"/>  <br/> <br/> 
+				<h:outputText style="font-weight: bold" value="PMID: "/> 
+				<h:outputText value="#{pubMedSearch.selectedPub.pmid}" id="selectedpubconfirmp"/>  <br/> <br/> 
+				
+			</h:form>
+			<h:form id="dtable">
+        <p:dataList id="ft" var="sfiles" value="#{pubMedSearch.allfiles}" type="ordered"> 
+		         
+		          #{sfiles.filename}  #{sfiles.filelocation} 
+		          <h:outputText value="&#160;" />
+		        <h:commandLink id="linkers" action="#{sfiles.filelocation}" immediate="true"> Download this file</h:commandLink>
+	        
+	            
+			 </p:dataList > 
+	
+			</h:form>
+			
+<h:form id="formDownload">
+<p:dataTable id="downloadsfile" var="dfiles" sortMode="multiple" rowKey="#{dfiles.index}" value="#{pubMedSearch.allfiles}" selection="#{pubMedSearch.selecteddownloadfile}" selectionMode="single" paginator="true" rows="10" paginatorPosition="bottom">
+
+<f:facet name="header">Select ECG Records for Download</f:facet>
+
+<p:column headerText="File Name">
+<h:outputText value="#{dfiles.filename}"/>
+</p:column>
+<p:column headerText="Download">
+	<f:facet name="footer">
+<p:commandButton id="downloadRaw" ajax="false" value="Download Files" action="#{pubMedSearch.downloadPrep}"/>
+</f:facet>
+</p:column>
+
+</p:dataTable>
+			</h:form>		
+		
+				</h:panelGrid>
+				
+				
+			
+			</p:panel>
+		</p:tab>
+	</p:wizard>
+	
+</h:form>
+                    
+	
+	
+	</h:body>
+</f:view>
